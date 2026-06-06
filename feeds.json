@@ -1,0 +1,23 @@
+[
+  {
+    "name": "BBC World",
+    "url": "https://feeds.bbci.co.uk/news/world/rss.xml"
+  },
+  {
+    "name": "BBC Business",
+    "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+  },
+  {
+    "name": "BBC Technology",
+    "url": "https://feeds.bbci.co.uk/news/technology/rss.xml"
+  },
+  {
+    "name": "Google News Japan",
+    "url": "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja"
+  },
+  {
+    "name": "Google News US",
+    "url": "https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en"
+  }
+]
+
