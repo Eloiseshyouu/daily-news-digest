@@ -1,23 +1,33 @@
 [
   {
-    "name": "BBC World",
-    "url": "https://feeds.bbci.co.uk/news/world/rss.xml"
+    "name": "Reuters Japan",
+    "category": "japan",
+    "url": "https://news.google.com/rss/search?q=(Japan%20OR%20%E6%97%A5%E6%9C%AC)%20(Reuters%20OR%20AP%20OR%20AFP%20OR%20Nikkei%20OR%20NHK%20OR%20Kyodo%20OR%20Asahi%20OR%20%22The%20Japan%20Times%22)%20when:1d&hl=zh-CN&gl=JP&ceid=JP:zh-Hans"
   },
   {
-    "name": "BBC Business",
-    "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+    "name": "Japan Life and Policy",
+    "category": "japan",
+    "url": "https://news.google.com/rss/search?q=(%E6%97%A5%E6%9C%AC%20OR%20Japan)%20(%E7%89%A9%E4%BB%B7%20OR%20%E6%97%A5%E5%85%83%20OR%20%E7%95%99%E5%AD%A6%20OR%20%E7%AD%BE%E8%AF%81%20OR%20%E7%A4%BE%E4%BC%9A%E5%AE%89%E5%85%A8%20OR%20%E4%B8%AD%E6%97%A5%E5%85%B3%E7%B3%BB)%20when:1d&hl=zh-CN&gl=JP&ceid=JP:zh-Hans"
   },
   {
-    "name": "BBC Technology",
-    "url": "https://feeds.bbci.co.uk/news/technology/rss.xml"
+    "name": "China Economy and Diplomacy",
+    "category": "china",
+    "url": "https://news.google.com/rss/search?q=(%E4%B8%AD%E5%9B%BD%20OR%20China)%20(%E7%BB%8F%E6%B5%8E%20OR%20%E5%A4%96%E4%BA%A4%20OR%20%E6%97%A5%E6%9C%AC%20OR%20%E5%AF%B9%E6%97%A5%20OR%20%E6%B5%B7%E5%A4%96%E4%B8%AD%E5%9B%BD%E4%BA%BA)%20(Reuters%20OR%20AP%20OR%20AFP%20OR%20BBC%20OR%20FT%20OR%20WSJ%20OR%20Bloomberg%20OR%20Caixin%20OR%20SCMP)%20when:1d&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
   },
   {
-    "name": "Google News Japan",
-    "url": "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja"
+    "name": "Global Geopolitics",
+    "category": "global",
+    "url": "https://news.google.com/rss/search?q=(United%20States%20OR%20Europe%20OR%20Middle%20East%20OR%20Russia%20Ukraine%20OR%20Asia%20Pacific)%20(Reuters%20OR%20AP%20OR%20AFP%20OR%20BBC%20OR%20FT%20OR%20WSJ%20OR%20Bloomberg%20OR%20Al%20Jazeera)%20when:1d&hl=zh-CN&gl=US&ceid=US:zh-Hans"
   },
   {
-    "name": "Google News US",
-    "url": "https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en"
+    "name": "Global Economy and Markets",
+    "category": "global",
+    "url": "https://news.google.com/rss/search?q=(global%20economy%20OR%20markets%20OR%20inflation%20OR%20yen%20OR%20dollar%20OR%20oil)%20(Reuters%20OR%20AP%20OR%20AFP%20OR%20FT%20OR%20WSJ%20OR%20Bloomberg%20OR%20Nikkei)%20when:1d&hl=zh-CN&gl=US&ceid=US:zh-Hans"
+  },
+  {
+    "name": "Official Institutions",
+    "category": "official",
+    "url": "https://news.google.com/rss/search?q=(Japan%20government%20OR%20MOFA%20Japan%20OR%20Bank%20of%20Japan%20OR%20China%20Ministry%20of%20Foreign%20Affairs%20OR%20IMF%20OR%20World%20Bank)%20when:1d&hl=zh-CN&gl=JP&ceid=JP:zh-Hans"
   }
 ]
 
