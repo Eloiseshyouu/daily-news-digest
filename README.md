@@ -1,12 +1,17 @@
+
 # Daily News Cloud Job
 
-This project sends a daily news digest by email from GitHub Actions.
+This project sends a Chinese daily news digest by email from GitHub Actions.
+The digest is tuned for a Chinese student living in Japan.
 
 ## What It Does
 
 - Runs every day at 09:00 Asia/Tokyo time.
-- Reads RSS feeds from `feeds.json`.
-- Builds a short email digest.
+- Reads multi-region news RSS feeds from `feeds.json`.
+- Builds a Chinese HTML email with a plain-text fallback.
+- Prioritizes Japan, China, and global trend news.
+- Defaults to about 6 important items per day.
+- Focuses on Japan prices, yen, student life, policy, safety, China-Japan relations, China economy and diplomacy, overseas Chinese issues, US/Europe/Middle East/Russia-Ukraine/Asia-Pacific security, and global markets.
 - Sends the digest through SMTP.
 - Can also be run manually from GitHub Actions.
 
@@ -53,5 +58,8 @@ DRY_RUN=1 python3 news_digest.py
 
 ## Change News Sources
 
-Edit `feeds.json`. Each item needs a `name` and `url`.
+Edit `feeds.json`. Each item needs a `name`, `category`, and `url`.
 
+Preferred source direction: Reuters, AP, AFP, BBC, FT, WSJ, Bloomberg,
+Nikkei, NHK, Kyodo, Asahi, The Japan Times, Caixin, SCMP, Al Jazeera,
+and official institutions.
