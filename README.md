@@ -1,6 +1,11 @@
 
 # Daily News Cloud Job
 
+> 2026-10-20：旧版 RSS 邮件流程已暂停。免费 AI 中文编辑候选版见
+> [FREE_EDITION_SETUP.md](FREE_EDITION_SETUP.md)。新工作流默认不发送；
+> 配置免费项目、验收真实样稿后才能启用。下面保留的是旧版本说明，
+> 不要仅重新开启 `Daily News Digest` 旧工作流。
+
 This project sends a Chinese daily news digest by email from GitHub Actions.
 The digest is tuned for a Chinese student living in Japan.
 

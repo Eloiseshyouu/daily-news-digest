@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "verification_note": "2026-10-20: FNN public RSS discovered from its homepage and article paragraph bodies verified; RTHK exact itemFullText verified. CJK noise floor is 220 total characters including 180 CJK, Latin floor 400; semantic evidence sufficiency still requires independent review. Public live collection now covers Japan, China and global sources. NHK remains disabled because only truncated public leads were available. Failures do not trigger paid fallbacks or paywall bypasses.",
+  "sources": [
+    {"id": "nhk", "publisher": "NHK", "region": "japan", "url": "https://news.web.nhk/n-data/conf/na/rss/cat0.xml", "allowed_domains": ["news.web.nhk", "nhk.or.jp", "nhk.jp"], "enabled": false, "disabled_reason": "Live check found truncated article introductions plus unrelated recommendations and NHK ONE contract UI; no public full body verified."},
+    {"id": "fnn", "publisher": "富士新闻网", "region": "japan", "url": "https://www.fnn.jp/list/feed/rss?station=FNN", "allowed_domains": ["fnn.jp"], "max_items": 12},
+    {"id": "fujitv", "publisher": "富士新闻网", "region": "japan", "url": "https://www.fnn.jp/list/feed/rss?station=FujiTV", "allowed_domains": ["fnn.jp"], "max_items": 12},
+    {"id": "bbc_world", "publisher": "英国广播公司", "region": "global", "url": "https://feeds.bbci.co.uk/news/world/rss.xml", "allowed_domains": ["bbci.co.uk", "bbc.co.uk", "bbc.com"]},
+    {"id": "bbc_business", "publisher": "英国广播公司", "region": "global", "url": "https://feeds.bbci.co.uk/news/business/rss.xml", "allowed_domains": ["bbci.co.uk", "bbc.co.uk", "bbc.com"]},
+    {"id": "aljazeera", "publisher": "半岛电视台", "region": "global", "url": "https://www.aljazeera.com/xml/rss/all.xml", "allowed_domains": ["aljazeera.com"]},
+    {"id": "rthk_china", "publisher": "香港电台", "region": "china", "url": "https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_greaterchina.xml", "allowed_domains": ["rthk.hk"], "body_class": "itemFullText", "max_items": 12},
+    {"id": "rthk_china_en", "publisher": "香港电台", "region": "china", "url": "https://rthk9.rthk.hk/rthk/news/rss/e_expressnews_egreaterchina.xml", "allowed_domains": ["rthk.hk"], "body_class": "itemFullText", "max_items": 12},
+    {"id": "rthk_world", "publisher": "香港电台", "region": "global", "url": "https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cinternational.xml", "allowed_domains": ["rthk.hk"], "body_class": "itemFullText", "max_items": 12},
+    {"id": "rthk_finance", "publisher": "香港电台", "region": "china", "url": "https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cfinance.xml", "allowed_domains": ["rthk.hk"], "body_class": "itemFullText", "max_items": 8},
+    {"id": "guardian_world", "publisher": "英国卫报", "region": "global", "url": "https://www.theguardian.com/world/rss", "allowed_domains": ["theguardian.com"]},
+    {"id": "scmp_china", "publisher": "南华早报", "region": "china", "url": "https://www.scmp.com/rss/4/feed", "allowed_domains": ["scmp.com"]},
+    {"id": "un_news", "publisher": "联合国新闻", "region": "global", "url": "https://news.un.org/feed/subscribe/en/news/all/rss.xml", "allowed_domains": ["un.org"]}
+  ]
+}
