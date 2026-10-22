@@ -1,0 +1,126 @@
+# Candidate workflow. NEWS_MAIL_ENABLED is deliberately absent by default.
+# Keep the legacy Daily News Digest disabled when this workflow is deployed.
+name: Reviewed Chinese News
+
+on:
+  schedule:
+    # Start before the top-of-hour queue; collect at 08:53, send no earlier than 09:00 JST.
+    - cron: "37 23 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "preview生成样稿；test发送已验收样稿（每天最多一封）"
+        type: choice
+        options: [preview, test]
+        default: preview
+      preview_run_id:
+        description: "仅test填写：已检查通过的preview运行编号"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: reviewed-daily-news
+  cancel-in-progress: false
+
+jobs:
+  reviewed-news:
+    if: >-
+      vars.GEMINI_FREE_TIER_CONFIRMED == '1' &&
+      (github.event_name == 'workflow_dispatch' || vars.NEWS_MAIL_ENABLED == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run offline safety tests
+        run: python -m unittest discover -p 'test_news_*.py' -v
+
+      - name: Collect, edit and independently review
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'preview'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_FREE_TIER_CONFIRMED: ${{ vars.GEMINI_FREE_TIER_CONFIRMED }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          GITHUB_TOKEN: ${{ github.token }}
+          PREVIEW_ONLY: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          if [ "$PREVIEW_ONLY" = "true" ]; then
+            python news_pipeline.py prepare --dry-run
+          else
+            python news_pipeline.py prepare
+          fi
+
+      - name: Download the inspected preview for the single test email
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'test'
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.preview_run_id }}
+          pattern: news-preview-${{ inputs.preview_run_id }}-*
+          merge-multiple: true
+          path: preview
+
+      - name: Validate test preview and reserve test delivery
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'test'
+        env:
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python news_pipeline.py claim-test
+
+      - name: Read reviewed edition date
+        id: edition
+        run: |
+          python -c 'import json,os; from pathlib import Path; d=json.loads(Path("preview/digest.json").read_text()); open(os.environ["GITHUB_OUTPUT"],"a").write("day="+d["draft"]["date"]+"\n")'
+
+      - name: Save preview and review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: news-preview-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            preview/digest.json
+            preview/digest.html
+            preview/digest.txt
+          retention-days: 7
+          if-no-files-found: error
+
+      # Claim is uploaded BEFORE SMTP. A failed or ambiguous send is never retried
+      # automatically; manually verify the mailbox before deleting a claim.
+      - name: Persist daily send claim
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'test'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-news-${{ inputs.mode == 'test' && 'test-claim' || 'claim' }}-${{ steps.edition.outputs.day }}
+          path: preview/claim.json
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Send only the reviewed edition
+        id: send
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'test'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python news_pipeline.py send
+
+      - name: Save delivered edition for cross-day deduplication
+        if: steps.send.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-news-${{ inputs.mode == 'test' && 'test-sent' || 'sent' }}-${{ steps.edition.outputs.day }}
+          path: |
+            preview/digest.json
+            preview/sent.json
+          retention-days: 30
+          if-no-files-found: error
