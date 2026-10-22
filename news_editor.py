@@ -48,8 +48,8 @@ MAX_SOURCES = 40
 MAX_SOURCE_CHARS = 100_000
 MAX_HISTORY_ITEMS = 100
 MAX_RESPONSE_BYTES = 1_000_000
-TOTAL_TIMEOUT_SECONDS = 240
-REQUEST_TIMEOUT_SECONDS = 60
+TOTAL_TIMEOUT_SECONDS = 480
+REQUEST_TIMEOUT_SECONDS = 120
 # Local typo/header-size guards, not a provider-defined key format or limit.
 # Auth keys are opaque: don't assume a prefix, punctuation, or legacy length.
 MIN_API_KEY_CHARS = 20
@@ -564,7 +564,9 @@ def _generate_json(
         raise EditorError(
             f"Gemini HTTP {exc.code}; stopped without paid fallback or automatic retry."
         ) from None
-    except (urllib.error.URLError, TimeoutError, OSError):
+    except TimeoutError:
+        raise EditorError("Gemini request timed out; no approved digest.") from None
+    except (urllib.error.URLError, OSError):
         raise EditorError("Gemini network request failed; no approved digest.") from None
     if time.monotonic() > deadline or len(raw) > MAX_RESPONSE_BYTES:
         raise EditorError("Gemini response exceeded the time or size limit.")
