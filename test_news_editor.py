@@ -367,6 +367,16 @@ class EditorTests(unittest.TestCase):
                 with self.assertRaises(editor.EditorError):
                     self.invoke_transport()
 
+    def test_timeout_is_safe_and_not_retried(self):
+        opener = MagicMock()
+        opener.open.side_effect = TimeoutError(FAKE_KEY)
+        with patch("news_editor.urllib.request.build_opener", return_value=opener):
+            with self.assertRaisesRegex(editor.EditorError, "request timed out") as caught:
+                self.invoke_transport()
+        opener.open.assert_called_once()
+        self.assertNotIn(FAKE_KEY, str(caught.exception))
+        self.assertLessEqual(opener.open.call_args.kwargs["timeout"], 10)
+
     def test_http_error_does_not_leak_provider_body_or_key(self):
         opener = MagicMock()
         opener.open.side_effect = urllib.error.HTTPError(
